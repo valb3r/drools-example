@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group 'com.valb3r.drools.example.simple'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+
+repositories {
+    mavenCentral()
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:1.18.24"
+    annotationProcessor "org.projectlombok:lombok:1.18.24"
+
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+
+    implementation 'org.kie:kie-ci:8.33.0.Final' // Drools dependency
+    implementation 'org.drools:drools-decisiontables:8.33.0.Final' // Drools dependency
+}

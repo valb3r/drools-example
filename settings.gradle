@@ -1,0 +1,5 @@
+rootProject.name = 'drools-example'
+
+include("drools-gui")
+include("drools-simple")
+

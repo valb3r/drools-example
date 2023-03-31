@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+group 'com.valb3r.drools.example.gui'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+
+repositories {
+    mavenCentral()
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
+    maven { url "https://cache-redirector.jetbrains.com/intellij-dependencies" }
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+configurations {
+    antTask
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:1.18.24"
+    annotationProcessor "org.projectlombok:lombok:1.18.24"
+
+    implementation "org.slf4j:slf4j-api:2.0.6"
+    implementation "org.slf4j:slf4j-simple:2.0.6"
+    implementation 'com.formdev:flatlaf:3.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+    antTask 'com.jetbrains.intellij.java:java-compiler-ant-tasks:223.8214.52' // Make IntelliJ work with Swing better
+
+    implementation 'org.kie:kie-ci:8.33.0.Final' // Drools dependency
+    implementation 'org.drools:drools-decisiontables:8.33.0.Final' // Drools dependency
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+jar {
+    version = project.version
+    enabled = true
+    manifest {
+        attributes(
+            'Main-Class': 'org.example.DroolsExample'
+        )
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+// Make IntelliJ work with Swing better:
+task compileJava(type: JavaCompile, overwrite: true, dependsOn: configurations.implementation.getTaskDependencyFromProjectDependency(true, 'jar')) {
+            doLast {
+                project.sourceSets.main.output.classesDirs.each { project.mkdir(it) }
+                ant.taskdef name: 'javac2', classname: 'com.intellij.ant.Javac2', classpath: configurations.antTask.asPath
+                ant.javac2 srcdir: project.sourceSets.main.java.srcDirs.join(':'),
+                classpath: project.sourceSets.main.compileClasspath.asPath,
+                destdir: project.sourceSets.main.output.classesDirs[0],
+                source: sourceCompatibility,
+                target: targetCompatibility,
+                includeAntRuntime: false
+            }
+}
