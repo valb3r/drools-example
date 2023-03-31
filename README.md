@@ -5,8 +5,8 @@ This is Drools Business Rule management system example
 
 # What are the modules
 
-There is [GUI module](drools-gui) - more complicated example
-There is [Simple module](drools-simple) - more simple example
+- There is [GUI module](drools-gui) - more complicated example
+- There is [Simple module](drools-simple) - more simple example
 
 
 # What to read
