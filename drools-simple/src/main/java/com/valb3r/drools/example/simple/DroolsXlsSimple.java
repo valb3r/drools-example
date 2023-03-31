@@ -41,6 +41,10 @@ public class DroolsXlsSimple {
         KieModule kieModule = kb.getKieModule();
         var container = services.newKieContainer(kieModule.getReleaseId());
 
+        System.out.println();
+        System.out.println();
+        System.out.println("==================== Drools mapping is: ====================");
+
         for (Map<String, Object> stringObjectMap : csv) {
             var session = container.newStatelessKieSession();
             var droolsMappedOutput = new HashMap<String, Object>();
